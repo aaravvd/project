@@ -103,7 +103,7 @@ function timeElapse(date) {
     var years = Math.floor(seconds / (365 * 24 * 3600));
     seconds %= (365 * 24 * 3600);
 
-    var days = Math.floor(seconds / (3600 * 24)) + 30;
+    var days = (Math.floor(seconds / (3600 * 24))) + 30;
     seconds %= (3600 * 24);
 
     var hours = Math.floor(seconds / 3600);
