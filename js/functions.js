@@ -117,7 +117,7 @@ function timeElapse(date) {
 
     let days = Math.floor((now - tempDate) / (1000 * 60 * 60 * 24));
     tempDate.setDate(tempDate.getDate() + days);
-    if (days >=365){
+    if (days == 365){
 	    days = 0;
 	    years = years +1
     }
