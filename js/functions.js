@@ -92,7 +92,6 @@ function startHeartAnimation() {
 	};
 })(jQuery);
 
-<script>
   const startDate = new Date("2022-06-08T22:30:00"); // Set your relationship start time here
 
   function timeElapse(date) {
@@ -152,8 +151,6 @@ function startHeartAnimation() {
   }
 
   setInterval(() => timeElapse(startDate), 1000);
-</script>
-
 
 
 
