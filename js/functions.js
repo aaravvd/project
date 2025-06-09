@@ -92,60 +92,40 @@ function startHeartAnimation() {
 	};
 })(jQuery);
 
-const startDate = new Date("2022-06-09T00:00:00"); // Your real relationship start time
+const startDate = new Date("2022-06-09T00:00:00");
 
 function timeElapse(date) {
     const now = new Date();
 
-    // Get total difference in milliseconds
-    let diff = now - date;
+    let years = now.getFullYear() - date.getFullYear();
+    let anniversaryThisYear = new Date(date);
+    anniversaryThisYear.setFullYear(date.getFullYear() + years);
 
-    // Copy start date to not modify original
-    let tempDate = new Date(date.getTime());
-
-    let years = 0;
-    while (true) {
-        let nextYear = new Date(tempDate);
-        nextYear.setFullYear(nextYear.getFullYear() + 1);
-        if (nextYear <= now) {
-            years++;
-            tempDate = nextYear;
-        } else {
-            break;
-        }
+    // If today is before this year's anniversary, subtract a year
+    if (now < anniversaryThisYear) {
+        years--;
+        anniversaryThisYear.setFullYear(date.getFullYear() + years);
     }
 
-    let days = Math.floor((now - tempDate) / (1000 * 60 * 60 * 24));
-    tempDate.setDate(tempDate.getDate() + days);
-    if (days == 365){
-	    days = 0;
-	    years = years +1;
-    }
+    let diffMs = now - anniversaryThisYear;
 
-    let hours = now.getHours() - tempDate.getHours();
-    if (hours ==24) {
-	    hours = 0;
-	    days = days +1;
-    }
+    let days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    diffMs %= (1000 * 60 * 60 * 24);
 
-    let minutes = now.getMinutes() - tempDate.getMinutes();
-    if (minutes ==60) {
-        minutes = 0;
-        horsurs = hours + 1;
-    }
+    let hours = Math.floor(diffMs / (1000 * 60 * 60));
+    diffMs %= (1000 * 60 * 60);
 
-    let seconds = now.getSeconds() - tempDate.getSeconds();
-    if (seconds >60) {
-        seconds = 0;
-        minutes = minutes + 1;
-    }
+    let minutes = Math.floor(diffMs / (1000 * 60));
+    diffMs %= (1000 * 60);
 
-    // Pad values
+    let seconds = Math.floor(diffMs / 1000);
+
+    // Pad numbers
     if (hours < 10) hours = "0" + hours;
     if (minutes < 10) minutes = "0" + minutes;
     if (seconds < 10) seconds = "0" + seconds;
 
-    const result = 
+    const result =
         "<span class=\"digit\">" + years + "</span> years " +
         "<span class=\"digit\">" + days + "</span> days " +
         "<span class=\"digit\">" + hours + "</span> hours " +
@@ -156,6 +136,9 @@ function timeElapse(date) {
 }
 
 setInterval(() => timeElapse(startDate), 1000);
+
+
+
 
 
 
