@@ -119,25 +119,25 @@ function timeElapse(date) {
     tempDate.setDate(tempDate.getDate() + days);
     if (days == 365){
 	    days = 0;
-	    years = years +1
+	    years = years +1;
     }
 
     let hours = now.getHours() - tempDate.getHours();
-    if (hours < 0) {
-        hours += 24;
-        days -= 1;
+    if (hours ==24) {
+	    hours = 0;
+	    days = days +1;
     }
 
     let minutes = now.getMinutes() - tempDate.getMinutes();
-    if (minutes < 0) {
-        minutes += 60;
-        hours -= 1;
+    if (minutes ==60) {
+        minutes = 0;
+        horsurs = hours + 1;
     }
 
     let seconds = now.getSeconds() - tempDate.getSeconds();
-    if (seconds < 0) {
-        seconds += 60;
-        minutes -= 1;
+    if (seconds >60) {
+        seconds = 0;
+        minutes = minutes + 1;
     }
 
     // Pad values
