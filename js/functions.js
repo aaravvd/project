@@ -92,7 +92,7 @@ function startHeartAnimation() {
 	};
 })(jQuery);
 
-const startDate = new Date("2022-06-09T16:30:00"); // Your real relationship start time
+const startDate = new Date("2022-06-09T00:00:00"); // Your real relationship start time
 
 function timeElapse(date) {
     const now = new Date();
