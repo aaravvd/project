@@ -92,35 +92,56 @@ function startHeartAnimation() {
 	};
 })(jQuery);
 
-// Set the base start time: 2 years, 0 days, 22 hours, 30 minutes ago from now
-const offsetMilliseconds = (2 * 365 * 24 * 60 * 60 + 22 * 3600 + 30 * 60) * 1000;
-const startDate = new Date(Date.now() - offsetMilliseconds);
+const startDate = new Date("2022-06-09T16:30:00"); // Your real relationship start time
 
 function timeElapse(date) {
-    var current = new Date();
-    var seconds = Math.floor((current - Date.parse(date)) / 1000);
+    const now = new Date();
 
-    var years = Math.floor(seconds / (365 * 24 * 3600));
-    seconds %= (365 * 24 * 3600);
+    // Get total difference in milliseconds
+    let diff = now - date;
 
-    var days = (Math.floor(seconds / (3600 * 24))) + 30;
-	if (days >= 365){
-		years = years + 1;
-		days = 0;
-	}
-    seconds %= (3600 * 24);
+    // Copy start date to not modify original
+    let tempDate = new Date(date.getTime());
 
-    var hours = Math.floor(seconds / 3600);
+    let years = 0;
+    while (true) {
+        let nextYear = new Date(tempDate);
+        nextYear.setFullYear(nextYear.getFullYear() + 1);
+        if (nextYear <= now) {
+            years++;
+            tempDate = nextYear;
+        } else {
+            break;
+        }
+    }
+
+    let days = Math.floor((now - tempDate) / (1000 * 60 * 60 * 24));
+    tempDate.setDate(tempDate.getDate() + days);
+
+    let hours = now.getHours() - tempDate.getHours();
+    if (hours < 0) {
+        hours += 24;
+        days -= 1;
+    }
+
+    let minutes = now.getMinutes() - tempDate.getMinutes();
+    if (minutes < 0) {
+        minutes += 60;
+        hours -= 1;
+    }
+
+    let seconds = now.getSeconds() - tempDate.getSeconds();
+    if (seconds < 0) {
+        seconds += 60;
+        minutes -= 1;
+    }
+
+    // Pad values
     if (hours < 10) hours = "0" + hours;
-    seconds %= 3600;
-
-    var minutes = Math.floor(seconds / 60);
     if (minutes < 10) minutes = "0" + minutes;
-    seconds %= 60;
-
     if (seconds < 10) seconds = "0" + seconds;
 
-    var result = 
+    const result = 
         "<span class=\"digit\">" + years + "</span> years " +
         "<span class=\"digit\">" + days + "</span> days " +
         "<span class=\"digit\">" + hours + "</span> hours " +
@@ -131,6 +152,7 @@ function timeElapse(date) {
 }
 
 setInterval(() => timeElapse(startDate), 1000);
+
 
 
 function showMessages() {
