@@ -92,65 +92,51 @@ function startHeartAnimation() {
 	};
 })(jQuery);
 
-  const startDate = new Date("2022-06-08T22:30:00"); // Set your relationship start time here
+const startDate = new Date("2022-06-09T00:00:00");
 
-  function timeElapse(date) {
+function timeElapse(startDate) {
     const now = new Date();
 
-    // Year diff (we use tempDate to avoid mutating startDate)
-    let tempDate = new Date(date.getTime());
-    let years = 0;
-    while (true) {
-      let next = new Date(tempDate);
-      next.setFullYear(next.getFullYear() + 1);
-      if (next <= now) {
-        years++;
-        tempDate = next;
-      } else {
-        break;
-      }
+    // Full years
+    let years = now.getFullYear() - startDate.getFullYear();
+    const thisYearAnniversary = new Date(startDate);
+    thisYearAnniversary.setFullYear(startDate.getFullYear() + years);
+
+    if (now < thisYearAnniversary) {
+        years--;
+        thisYearAnniversary.setFullYear(startDate.getFullYear() + years);
     }
 
-    // Day diff
-    let days = Math.floor((now - tempDate) / (1000 * 60 * 60 * 24));
-    tempDate.setDate(tempDate.getDate() + days);
+    // Time since last anniversary
+    let diffMs = now - thisYearAnniversary;
+    let days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    diffMs %= (1000 * 60 * 60 * 24);
 
-    // Time difference
-    let hours = now.getHours() - tempDate.getHours();
-    let minutes = now.getMinutes() - tempDate.getMinutes();
-    let seconds = now.getSeconds() - tempDate.getSeconds();
+    let hours = Math.floor(diffMs / (1000 * 60 * 60));
+    diffMs %= (1000 * 60 * 60);
 
-    // Fix negatives by borrowing from larger units
-    if (seconds < 0) {
-      seconds += 60;
-      minutes--;
-    }
-    if (minutes < 0) {
-      minutes += 60;
-      hours--;
-    }
-    if (hours < 0) {
-      hours += 24;
-      days--;
-    }
+    let minutes = Math.floor(diffMs / (1000 * 60));
+    diffMs %= (1000 * 60);
 
-    // Pad
+    let seconds = Math.floor(diffMs / 1000);
+
+    // Pad numbers
     hours = hours < 10 ? "0" + hours : hours;
     minutes = minutes < 10 ? "0" + minutes : minutes;
     seconds = seconds < 10 ? "0" + seconds : seconds;
 
-    // Result
-    const result =
-      "<span class=\"digit\">" + years + "</span> years " +
-      "<span class=\"digit\">" + days + "</span> days " +
-      "<span class=\"digit\">" + hours + "</span> hours " +
-      "<span class=\"digit\">" + minutes + "</span> minutes " +
-      "<span class=\"digit\">" + seconds + "</span> seconds";
+    const result = 
+        `<span class="digit">${years}</span> years ` +
+        `<span class="digit">${days}</span> days ` +
+        `<span class="digit">${hours}</span> hours ` +
+        `<span class="digit">${minutes}</span> minutes ` +
+        `<span class="digit">${seconds}</span> seconds`;
 
     document.getElementById("elapseClock").innerHTML = result;
-  }
+}
 
-  setInterval(() => timeElapse(startDate), 1000);
+setInterval(() => timeElapse(startDate), 1000);
+
 
 
 
