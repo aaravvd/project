@@ -104,6 +104,10 @@ function timeElapse(date) {
     seconds %= (365 * 24 * 3600);
 
     var days = (Math.floor(seconds / (3600 * 24))) + 30;
+	if (days >= 365){
+		years = years + 1;
+		days = 0;
+	}
     seconds %= (3600 * 24);
 
     var hours = Math.floor(seconds / 3600);
